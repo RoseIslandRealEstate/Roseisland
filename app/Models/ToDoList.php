@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ToDoList extends Model
 {
     use HasFactory;
+    public function agent ()  {
+        return $this->belongsTo(Agent::class,'agent_id');
+    }
 }

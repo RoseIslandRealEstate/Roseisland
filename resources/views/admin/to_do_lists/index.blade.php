@@ -1,3 +1,7 @@
+@section('styles')
+    <link href="{{ URL::to('assets/admin/') }}/select2/dist/css/select2.min.css" rel="stylesheet" />
+@endsection
+
 @extends('admin.content.layout')
 @section('content')
     <div class="row clearfix">
@@ -19,39 +23,45 @@
                 <div class="body project_report">
                             <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exampleModal">
-                            Add New 
+                            Add new Task
                         </button>
                         </br>
                         </br>
-                    <div class="table-responsive">
-                        <table class="table table-hover js-basic-example dataTable table-custom mb-0">
-                            <thead>
-                                <tr>                                            
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Image</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($allData as $data)
-                                <tr>
-                                    <td class="project-title">
-                                        {{ $data->id }}
-                                    </td>
-                                    <td >
-                                        {{ $data->name}}
-                                    </td>
-                                    <td><img src="{{ URL::to($data->image??'assets/admin/images/xs/avatar1.jpg') }}" data-toggle="tooltip" data-placement="top" title="Team Lead" alt="Avatar" class="width35 rounded"></td>
-                                    <td class="project-actions">
-                                        <a data-toggle="modal" data-target="#exampleModalEdit" class="btn btn-sm btn-outline-success edit_loader" data-url="{{ URL::to('projects/edit/'.$data->id) }}"><i class="icon-pencil"></i></a>
-                                        <a href="{{ URL::to('projects/delete/'.$data->id) }}" class="btn btn-sm btn-outline-danger js-sweetalert" title="Delete" data-type="confirm"><i class="icon-trash"></i></a>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                    {{ Form::open(['url'=>'to-do-lists','class'=>'filter_form','method'=>'GET']) }}
+                            <div class="row clearfix">
+                                <div class="col-lg-3 col-md-3">
+                                    <b>Agent</b>
+                                    <div class="input-group mb-3">
+                                       {{ Form::select('agent_id',$agents,null,['class'=>'form-control  select2','placeholder'=>'Please Choose Agent']) }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <b>Date from</b>
+                                    <div class="input-group mb-3">
+                                        {{ Form::date('date_from',request()->date_from,['class'=>'form-control']) }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <b>Date to</b>
+                                    <div class="input-group mb-3">
+                                        {{ Form::date('date_to',request()->date_to,['class'=>'form-control']) }}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-3 text-center"  style="padding-top:20px">
+                                    <button class="btn btn-lg btn-primary submit-btn" type="submit">Search</button>
+                                </div>
+                            </div>
+                    {{ Form::close() }}
+                    <div class="table-responsive filter_table filter_holder ">
+                            <div class="table_loader_holder">
+                                <div class="table_loader"></div>
+                            </div>
+                            <div class="table_div">
+                                @include('admin.to_do_lists.table')
+                            </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -60,27 +70,15 @@
                 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                     <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">New Project</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">New Task</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
                                 <div class="demo-masked-input">
-                                    {{ Form::open(['url'=>'projects/add','files'=>'true','enctype'=>'mulitipart']) }}
-                                    <div class="row clearfix">
-                                        <div class="col-lg-12">
-                                            <b>Name</b>
-                                            <div class="input-group mb-3">
-                                                {{ Form::text('name',null,['class'=>'form-control','required']) }}
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12 text-center">
-                                            <button class="btn btn-lg btn-primary submit-btn" type="submit">Save</button>
-                                        </div>
-                                    </div>
-                                    {{ Form::token() }}
-                                    {{ Form::close() }}
+                                    @include('admin.to_do_lists.add')
+                                    
                                 </div>
                             </div>
                     </div>
@@ -90,7 +88,7 @@
                 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                     <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title text-center" id="exampleModalEdit">Update</h5>
+                                <!-- <h5 class="modal-title text-center" id="exampleModalEdit">Update</h5> -->
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
@@ -110,4 +108,14 @@
             </div>
         <!-- endmodual -->
     </div>
+    @section('scripts')
+        <script src="{{ URL::to('assets/admin') }}/select2/dist/js/select2.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('.select2').select2({
+                        width: '100%'
+                });
+            });
+        </script>
+    @endsection
 @stop

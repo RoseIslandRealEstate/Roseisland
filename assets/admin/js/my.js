@@ -90,6 +90,7 @@ $('.add_row').submit(function(e){
 $(document).on('click', '.table_div .page-link', function(e) {
     e.preventDefault();
     var url = $(this).attr('href');
+     window.history.pushState({}, '', url);
     $('.filter_holder').addClass('active');
     $.get(url,function(data){
         $('.table_div').html(data); 

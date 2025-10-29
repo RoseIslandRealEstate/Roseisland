@@ -51,6 +51,7 @@ Route::group(['middleware'=>['web', 'multi_auth']],function(){
     
     // to do list 
     Route::get('to-do-lists',[Admin\ToDoListController::class,'index']);
+    Route::post('to-do-lists/add-row',[Admin\ToDoListController::class,'add_row']);
     Route::post('to-do-lists/add',[Admin\ToDoListController::class,'add']);
     Route::post('to-do-lists/update-order',[Admin\ToDoListController::class,'update_order']);
     Route::get('to-do-lists/edit/{id}',[Admin\ToDoListController::class,'edit']);

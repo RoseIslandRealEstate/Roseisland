@@ -221,3 +221,7 @@ form .alert_success_msg {
   max-height: 350px;
   overflow-y: scroll;
 }
+.select2-container--default .select2-selection--single {
+    border: 1px solid #eee;
+    height: 38px;
+}

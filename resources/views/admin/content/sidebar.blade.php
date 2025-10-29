@@ -45,6 +45,7 @@
                                         <li><a href="{{ URL::to('agents') }}">Agents</a></li>
                                         <li><a href="{{ URL::to('projects') }}">Projects</a></li>
                                         <li><a href="{{ URL::to('compaigns') }}">Compaigns</a></li>
+                                        <li><a href="{{ URL::to('to-do-lists') }}">Tasks</a></li>
                                     @endif
                                 </ul>
                             </li>
